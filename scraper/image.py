@@ -80,8 +80,7 @@ import google.cloud.storage
 #     source_file_name,
 #     bucket))
 
-import os
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "uoft-hack-786661112645.json"
+
 # def implicit():
 #     from google.cloud import storage
 #
@@ -139,6 +138,9 @@ os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "uoft-hack-786661112645.json"
 import shutil
 import os
 
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "uoft-hack-786661112645.json"
+
+
 def detect_properties(path):
     """Detects image properties in the file."""
     client = vision.ImageAnnotatorClient()
@@ -174,3 +176,72 @@ def detect_properties(path):
 # for filename in os.listdir("new_images"):
 #     detect_properties('new_images' + '/' + filename)
 # detect_properties('hmgoepprod (1).jpeg')
+
+
+def detect_web(path):
+    """Detects web annotations given an image."""
+    client = vision.ImageAnnotatorClient()
+
+    with io.open(path, 'rb') as image_file:
+        content = image_file.read()
+
+    image = types.Image(content=content)
+
+    response = client.web_detection(image=image)
+    notes = response.web_detection
+
+    # if notes.pages_with_matching_images:
+    #     print('\n{} Pages with matching images retrieved')
+    #
+    #     for page in notes.pages_with_matching_images:
+    #         print('Url   : {}'.format(page.url))
+    #
+    # if notes.full_matching_images:
+    #     print ('\n{} Full Matches found: '.format(
+    #            len(notes.full_matching_images)))
+    #
+    #     for image in notes.full_matching_images:
+    #         print('Url  : {}'.format(image.url))
+    #
+    # if notes.partial_matching_images:
+    #     print ('\n{} Partial Matches found: '.format(
+    #            len(notes.partial_matching_images)))
+    #
+    #     for image in notes.partial_matching_images:
+    #         print('Url  : {}'.format(image.url))
+
+    if notes.web_entities:
+        # print ('\n{} Web entities found: '.format(len(notes.web_entities)))
+        print('Score      : {}'.format(notes.web_entities[0].score))
+        print('Description: {}'.format(notes.web_entities[0].description))
+        # for entity in notes.web_entities:
+        #     print('Score      : {}'.format(entity.score))
+        #     print('Description: {}'.format(entity.description))
+
+# for filename in os.listdir("new_images")[:30]:
+#     detect_web('new_images' + '/' + filename)
+# detect_properties('hmgoepprod (1).jpeg')
+
+
+# import sqlite3
+# conn = sqlite3.connect('/Users/Rahul/Desktop/UofTHacksV/scraper/db.scraper', check_same_thread=False)
+# c = conn.cursor()
+#
+#
+# def feed_execute(parsed_feed):
+#     c.execute('SELECT MAX(id) FROM app_file_feeds')
+#     recent_primary_key = c.fetchone()
+#     if recent_primary_key[0] is None:
+#         recent_primary_key = 1
+#     else:
+#         recent_primary_key = recent_primary_key[0]
+#
+#     for number in range(len(parsed_feed)):
+#         recent_primary_key += 1
+#         title = parsed_feed[number][0]
+#         link = parsed_feed[number][1]
+#         category = parsed_feed[number][-1]
+#         c.execute("INSERT INTO app_file_feeds VALUES (?, ?, ?, ?)",
+#                   (recent_primary_key, title, link, category))
+#         conn.commit()
+#     print('RSS Done')
