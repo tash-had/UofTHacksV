@@ -13,5 +13,6 @@ public class GlobalVariables {
     static UUID uuid = UUID.randomUUID();
     static View bottomBarView;
     static String userGender;
+    static String fullUserName;
 
 }

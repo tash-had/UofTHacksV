@@ -27,6 +27,7 @@ dependencies {
     compile 'com.squareup.okio:okio:1.13.0'
     compile 'com.google.code.gson:gson:2.8.2'
     compile 'com.android.support:multidex:1.0.2'
+
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 

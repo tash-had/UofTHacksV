@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="5a2ec6ca-b0a9-4695-bd82-3149fea63356" name="flasklocal-server" url="http://localhost">
+        <fileTransfer port="0" mountedRoot="$USER_HOME$/WebProjects/YHack2017/smartfxr-api-basic" accessType="MOUNT" />
+      </webServer>
+    </option>
+  </component>
+</project>
