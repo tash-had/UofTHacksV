@@ -9,7 +9,7 @@ import json
 
 app = Flask(__name__)
 # mongo = PyMongo(app)
-client = MongoClient(port=27017)
+client = MongoClient(host='localhost', port=27017)
 db = client.data
 
 
@@ -26,24 +26,27 @@ def receive_outfit():
             timestamp = pic_data['timestamp']
             image = pic_data['encoded_image']
 
-            user = {"name": name, "gender":gender, "user_id":"",
+
+            user_data = {"name": name, "gender":gender, "user_id":"",
                     "previous_matches": [], "worn_outfits": []}
-            cloth = {"uuid": uuid, "owner":user['name'], "timestamp": timestamp,
+            cloth = {"uuid": uuid, "owner":user_data['name'], "timestamp": timestamp,
                      "image": image, "last_worn_days": 0, "category":"",
                      "web_entities":[], "match":[], "colors":[]}
 
-            if not db.users.find({'UserIDS': user['name']}).count() > 0:
+            existing_users = db.users.find({"user.name": user_data["name"]}).count()
+
+            if existing_users == 0:
+                # user is new
                 new_user = {
-                    "user": user,
+                    "user": user_data,
                     "clothes" : [cloth]
                 }
                 result = db.users.insert_one(new_user)
-                print(result.inserted_id)
 
             else:
-                db.users.update({"user.name": user['name']},
-                                {"$push": {
-                                    'clothes', cloth}})
+                print("yo")
+                db.users.update({"user.name": user_data['name']},
+                                {"$push": {'clothes': cloth}})
 
         except Exception as e:
             print(e)
