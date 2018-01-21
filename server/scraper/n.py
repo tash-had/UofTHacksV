@@ -6,12 +6,15 @@ from google.cloud.vision import types
 
 ## User Side
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "uoft-hack-786661112645.json"
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/tash-had/AndroidStudioProjects/UofTHacksV/scraper/uoft-hack-786661112645.json"
 
 
 def detect_properties(path):
+
+    print("hey2");
     """Detects image properties in the file."""
     client = vision.ImageAnnotatorClient()
+    print("hey3")
 
     with io.open(path, 'rb') as image_file:
         content = image_file.read()
