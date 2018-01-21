@@ -24,4 +24,6 @@ class Color:
 
         :return: String
         """
-        return self.r, self.g, self.b
+        return str(self.r) + ' ' + str(self.g) + ' ' + str(self.b)
+
+
