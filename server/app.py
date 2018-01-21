@@ -4,7 +4,9 @@ from flask import Flask, jsonify
 from pymongo import MongoClient
 
 from flask import abort, make_response, request, url_for
+from scraper.n import detect_properties, detect_web
 
+import base64
 import json
 
 app = Flask(__name__)
@@ -31,6 +33,12 @@ def receive_outfit():
             cloth = {"uuid": uuid, "owner":user['name'], "timestamp": timestamp,
                      "image": image, "last_worn_days": 0, "category":"",
                      "web_entities":[], "match":[], "colors":[]}
+
+
+            with open("imageToSave.png", "wb") as fh:
+                fh.write(base64.decodebytes(pic_data))
+            cloth['colors'] = detect_properties('imageToSave.png')
+            cloth['web_entities'] = detect_web('imageToSave.png')
 
             if not db.users.find({'UserIDS': user['name']}).count() > 0:
                 new_user = {

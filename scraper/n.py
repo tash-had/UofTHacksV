@@ -9,7 +9,7 @@ from google.cloud.vision import types
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "uoft-hack-786661112645.json"
 
 
-def detect_properties(path, color_pairs):
+def detect_properties(path):
     """Detects image properties in the file."""
     client = vision.ImageAnnotatorClient()
 
