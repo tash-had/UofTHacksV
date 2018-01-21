@@ -17,7 +17,8 @@ import okhttp3.Request;
 
 public class SendPhotoToServer {
     static OkHttpClient client = new OkHttpClient();
-    static String SERVER = "http://100.64.223.5:5000";
+     static String SERVER = "http://100.64.223.5:5000";
+//       static String SERVER = "http://100.64.188.64:5000";
 
 
     void sendPhoto(HashMap<String, String> jsonData) throws IOException{
