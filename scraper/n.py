@@ -2,6 +2,7 @@ import io
 import os
 from google.cloud import vision
 from google.cloud.vision import types
+import googleapiclient.discovery
 
 
 ## User Side
@@ -9,22 +10,35 @@ from google.cloud.vision import types
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/tash-had/AndroidStudioProjects/UofTHacksV/scraper/uoft-hack-786661112645.json"
 
 
-def detect_properties(path):
+def detect_properties(base64_img):
 
-    print("hey2");
-    """Detects image properties in the file."""
-    client = vision.ImageAnnotatorClient()
-    print("hey3")
+    # """Detects image properties in the file."""
+    # client = vision.ImageAnnotatorClient()
+    #
+    # with io.open(path, 'rb') as image_file:
+    #     content = image_file.read()
+    #
+    # image = types.Image(content=content)
+    #
+    # response = client.image_properties(image=image)
+    # props = response.image_properties_annotation
+    # color = props.dominant_colors.colors[0]
+    # return color
+    service = googleapiclient.discovery.build('vision', 'v1')
+    service_request = service.images().annotate(body={
+        'requests': [{
+            'image': {
+                'content': base64_img
+            },
+            'features': [{
+                'type': 'IMAGE_PROPERTIES'
+            }]
+        }]
+    })
+    response = service_request.execute()
+    c = response['responses'][0]["imagePropertiesAnnotation"]["dominantColors"]["colors"][0]["color"]
+    return c
 
-    with io.open(path, 'rb') as image_file:
-        content = image_file.read()
-
-    image = types.Image(content=content)
-
-    response = client.image_properties(image=image)
-    props = response.image_properties_annotation
-    color = props.dominant_colors.colors[0]
-    return color
 
     # for color in props.dominant_colors.colors[:3]:
     #     rgb = color.color.red + color.color.green + color.color.blue
@@ -67,17 +81,35 @@ def detect_properties(path):
     #                                 ])
 
 
-def detect_web(path):
-    """Detects web annotations given an image."""
-    client = vision.ImageAnnotatorClient()
+def detect_web(base64_img):
+    service = googleapiclient.discovery.build('vision', 'v1')
+    service_request = service.images().annotate(body={
+        'requests': [{
+            'image': {
+                'content': base64_img
+            },
+            'features': [{
+                'type': 'WEB_DETECTION'
+            }]
+        }]
+    })
+    response = service_request.execute()
+    l = response['responses'][0]["webDetection"]["webEntities"]
+    entities = []
+    for i in l:
+        entities.append(i['description'])
+    return entities
 
-    with io.open(path, 'rb') as image_file:
-        content = image_file.read()
-
-    image = types.Image(content=content)
-
-    response = client.web_detection(image=image)
-    notes = response.web_detection
+    # """Detects web annotations given an image."""
+    # client = vision.ImageAnnotatorClient()
+    #
+    # with io.open(path, 'rb') as image_file:
+    #     content = image_file.read()
+    #
+    # image = types.Image(content=content)
+    #
+    # response = client.web_detection(image=image)
+    # notes = response.web_detection
 
     # if notes.pages_with_matching_images:
     #     print('\n{} Pages with matching images retrieved')
@@ -99,9 +131,9 @@ def detect_web(path):
     #     for image in notes.partial_matching_images:
     #         print('Url  : {}'.format(image.url))
 
-    if notes.web_entities:
+    # if notes.web_entities:
         # print ('\n{} Web entities found: '.format(len(notes.web_entities)))
-        return notes.web_entities[0].description
+        # return notes.web_entities[0].description
         # print('Score      : {}'.format(notes.web_entities[0].score))
         # print('Description: {}'.format(notes.web_entities[0].description))
         # for entity in notes.web_entities:

@@ -31,14 +31,14 @@ def receive_outfit():
                     "previous_matches": [], "worn_outfits": []}
             cloth = {"uuid": uuid, "owner":user_data['name'], "timestamp": timestamp,
                      "image": image, "last_worn_days": 0, "category":"",
-                     "web_entities":[], "match":[], "colors":[]}
+                     "web_entities":[], "match":[], "colors":{}}
 
-            image_64_decode = base64.b64decode(image)
-            image_result = open('image.jpg', 'wb')
-            image_result.write(image_64_decode)
+            # image_64_decode = base64.b64decode(image)
+            # image_result = open('hmgo.gif', 'wb')
+            # image_result.write(image_64_decode)
 
-            cloth['colors'] = scraper.n.detect_properties('image.jpg')
-            cloth['web_entities'] = scraper.n.detect_web('image.jpg')
+            cloth['web_entities'].extend(scraper.n.detect_web(image))
+            cloth['colors'].update(scraper.n.detect_properties(image))
 
             existing_users = db.users.find({"user.name": user_data["name"]}).count()
 
@@ -46,12 +46,11 @@ def receive_outfit():
                 # user is new
                 new_user = {
                     "user": user_data,
-                    "clothes" : [cloth]
+                    "clothes": [cloth]
                 }
-                result = db.users.insert_one(new_user)
+                db.users.insert_one(new_user)
 
             else:
-                print("yo")
                 db.users.update({"user.name": user_data['name']},
                                 {"$push": {'clothes': cloth}})
 
