@@ -1,7 +1,19 @@
 import math
+from server.Clothing import Clothing
+from server.Color import Color
+import pickle
+from server.MatchedColorPair import MatchedPair
+
+def distinct_matched_pairs_to_weights(distinct_matched_pairs):
+    l = []
+    for item in distinct_matched_pairs:
+        l.append(item.weight)
+    return l
 
 
-def get_corresponding_color(color_to_match, distinct_matched_pairs, weights):
+# FEED THIS FUNCTION A SHIRT COLOUR
+def get_corresponding_color(color_to_match, distinct_matched_pairs):
+    weights = distinct_matched_pairs_to_weights(distinct_matched_pairs)
     color_weight_indices = []
     for ind in range(len(distinct_matched_pairs)):
         if distinct_matched_pairs[ind].color_one == color_to_match or \
@@ -35,3 +47,9 @@ def find_corresponding_clothing(list_of_clothes, color_to_match):
         if euclidian_distances[ind] == min_distance:
             return list_of_clothes[ind]
 
+if __name__ == "__main__":
+
+    pickle_in = open("server/total_matched_pairs.bin", "rb")
+    shirt = Clothing(Color(0, 32, 32), "shirt", 14)
+    total_matched_pairs = pickle.load(pickle_in)
+    print(total_matched_pairs)
