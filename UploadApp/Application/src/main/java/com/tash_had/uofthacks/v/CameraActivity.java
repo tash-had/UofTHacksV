@@ -41,21 +41,22 @@ public class CameraActivity extends AppCompatActivity {
     int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     SharedPreferences sp;
     String GENDER_KEY = "gender";
+    String USER_NAME_KEY = "quickDressed-user-name";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        sp = this.getSharedPreferences("uofthacksv.clothes-upload", Context.MODE_PRIVATE);
-
-        setName();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
+        sp = this.getSharedPreferences("quickdressed-data", Context.MODE_PRIVATE);
+        setName();
         String gender = sp.getString(GENDER_KEY, null);
         if (gender == null){
             getGender();
         }else{
             GlobalVariables.userGender = gender;
         }
+
         GlobalVariables.bottomBarView = findViewById(R.id.bottom_bar);
         GlobalVariables.cameraActivity = this;
 
@@ -79,9 +80,8 @@ public class CameraActivity extends AppCompatActivity {
 
 
     private void setName() {
-        String existingName = sp.getString("quickDressed-user-name", null);
-        if (existingName == null){
-
+        String existingName = sp.getString(USER_NAME_KEY, "");
+        if (existingName.equals("")){
             // Check the SDK version and whether the permission is already granted or not.
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
                 requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
@@ -89,11 +89,11 @@ public class CameraActivity extends AppCompatActivity {
             } else {
                 // Android version is lesser than 6.0 or the permission is already granted.
                 GlobalVariables.fullUserName = getUsername();
-                sp.edit().putString("quickDressed-user-name", GlobalVariables.fullUserName).apply();
+                sp.edit().putString(USER_NAME_KEY, GlobalVariables.fullUserName).apply();
 
             }
         }else {
-            GlobalVariables.userGender = existingName;
+            GlobalVariables.fullUserName = existingName;
         }
     }
 
@@ -105,7 +105,9 @@ public class CameraActivity extends AppCompatActivity {
                 // Permission is granted
                 setName();
             } else {
-                Toast.makeText(this, "Until you grant the permission, we cannot function.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,
+                        "Until you grant the permission, we cannot function.",
+                        Toast.LENGTH_SHORT).show();
             }
         }
     }
