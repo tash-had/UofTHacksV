@@ -23,7 +23,6 @@ public class SendPhotoToServer {
     void sendPhoto(HashMap<String, String> jsonData) throws IOException{
         JSONObject picDataJson = new JSONObject();
         try {
-            Toast.makeText(GlobalVariables.cameraActivity, GlobalVariables.fullUserName, Toast.LENGTH_SHORT).show();
             picDataJson.put("uuid", GlobalVariables.uuid);
             picDataJson.put("name", GlobalVariables.fullUserName);
             picDataJson.put("gender", GlobalVariables.userGender);
@@ -74,7 +73,8 @@ public class SendPhotoToServer {
                 }else if (s.contains("failure")){
                     Toast.makeText(GlobalVariables.cameraActivity, "Failure.", Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(GlobalVariables.cameraActivity, "1Network Error." + s, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GlobalVariables.cameraActivity, "Troube Communicating " +
+                            "with Server" + s, Toast.LENGTH_SHORT).show();
                 }
             }else{
                 Toast.makeText(GlobalVariables.cameraActivity, "Network Error", Toast.LENGTH_SHORT).show();
