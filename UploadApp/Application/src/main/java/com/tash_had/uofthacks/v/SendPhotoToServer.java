@@ -23,6 +23,7 @@ public class SendPhotoToServer {
     void sendPhoto(HashMap<String, String> jsonData) throws IOException{
         JSONObject picDataJson = new JSONObject();
         try {
+            Toast.makeText(GlobalVariables.cameraActivity, GlobalVariables.fullUserName, Toast.LENGTH_SHORT).show();
             picDataJson.put("uuid", GlobalVariables.uuid);
             picDataJson.put("name", GlobalVariables.fullUserName);
             picDataJson.put("gender", GlobalVariables.userGender);
