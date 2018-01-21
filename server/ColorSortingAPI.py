@@ -1,7 +1,16 @@
 import math
 
 
-def get_corresponding_color(color_to_match, distinct_matched_pairs, weights):
+def distinct_matched_pairs_to_weights(distinct_matched_pairs):
+    l = []
+    for item in distinct_matched_pairs:
+        l.append(item.weight)
+    return l
+
+
+# FEED THIS FUNCTION A SHIRT COLOUR
+def get_corresponding_color(color_to_match, distinct_matched_pairs):
+    weights = distinct_matched_pairs_to_weights(distinct_matched_pairs)
     color_weight_indices = []
     for ind in range(len(distinct_matched_pairs)):
         if distinct_matched_pairs[ind].color_one == color_to_match or \
