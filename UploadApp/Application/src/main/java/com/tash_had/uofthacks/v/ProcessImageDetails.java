@@ -28,19 +28,15 @@ class ProcessImageDetails {
 
     String timeStamp;
     Bitmap bitmap;
-    private String lon;
-    private String lat;
+
 
     public ProcessImageDetails(){
         super();
         context = GlobalVariables.cameraActivity.getApplicationContext();
-        setLatLon();
     }
 
     void setImageData(){
         imageDetailsMap.put("timestamp", timeStamp);
-        imageDetailsMap.put("lat", lat);
-        imageDetailsMap.put("lon", lon);
 
         this.bitmap = Bitmap.createScaledBitmap(this.bitmap, 360, 480, false);
         try{
@@ -72,23 +68,6 @@ class ProcessImageDetails {
                 }
             }
     }
-    private void setLatLon() {
-        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        Location location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-
-        this.lat = Double.toString(location.getLatitude());
-        this.lon = Double.toString(location.getLongitude());
-    }
 
     class EncodeImage extends AsyncTask<Bitmap, Integer, String>{
         String encodedImage;
@@ -116,7 +95,7 @@ class ProcessImageDetails {
                 bitmap = null;
             }
             try {
-                SendPhotoToServer.sendPhoto(imageDetailsMap);
+                new SendPhotoToServer().sendPhoto(imageDetailsMap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
