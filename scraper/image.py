@@ -5,7 +5,6 @@ import os
 from google.cloud import vision
 from google.cloud.vision import types
 
-
 # def implicit():
 #     from google.cloud import storage
 #
@@ -39,11 +38,6 @@ from google.cloud.vision import types
 # print('Labels:')
 # for label in labels:
 #     print(label.description)
-
-
-import os
-
-import google.cloud.storage
 #
 # GOOGLE_APPLICATION_CREDENTIALS = 'my_project_48949-e778a8049af2.json'
 #
@@ -79,8 +73,6 @@ import google.cloud.storage
 # print('File {} uploaded to {}.'.format(
 #     source_file_name,
 #     bucket))
-
-
 # def implicit():
 #     from google.cloud import storage
 #
@@ -105,14 +97,12 @@ import google.cloud.storage
 #     content = image_file.read()
 #
 # image = types.Image(content=content)
-
 # Performs label detection on the image file
 # response = client.color(image=image)
 # labels = response.label_annotations
 # response = client.label_detection(image=image)
 # labels = response.label_annotations
 # print(labels)
-
 # response = client.image_properties(image=image)
 # props = response.image_properties_annotation
 # # print(props)
@@ -125,18 +115,14 @@ import google.cloud.storage
 # color_list = props.dominant_colors.colors
 # for color in color_list[:1]:
 #     print(color)
-    # if
-    # if 'score: ' in color:
-    #     print(color)
-    # rgb = color.red + color.green + color.blue
-    # if rgb >= 720 and score >= 0.6
-
+# if
+# if 'score: ' in color:
+#     print(color)
+# rgb = color.red + color.green + color.blue
+# if rgb >= 720 and score >= 0.6
 # print('Labels:')
 # for label in labels:
 #     print(label)
-
-import shutil
-import os
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "uoft-hack-786661112645.json"
 
@@ -202,7 +188,7 @@ def detect_properties(path, color_pairs):
         # print('\tb: {}'.format(color.color.blue))
         # print('\ta: {}'.format(color.color.alpha))
 
-from ColorConversionLibrary import get_general_color
+from server.ColorConversionLibrary import get_general_color
 
 color_pairs = []
 counter = 0
