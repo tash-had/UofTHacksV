@@ -3,7 +3,7 @@ import pickle
 from server.Color import Color
 from server.MatchedColorPair import MatchedPair
 
-conn = sqlite3.connect('/Users/Saivv/Documents/UofTHacksQuickDressed/UofTHacksV/server/scraper/db.scraper', check_same_thread=False)
+conn = sqlite3.connect('/Users/tash-had/AndroidStudioProjects/UofTHacksV/server/scraper/db.scraper', check_same_thread=False)
 c = conn.cursor()
 c.execute('SELECT colors FROM TrainData')
 y = c.fetchall()
@@ -49,8 +49,8 @@ for item in distinct_matched_pairs:
     item.find_weight(total_matched_pairs)
 
 
-with open('server/total_distinct_pairs.bin', 'wb') as f:
+with open('total_distinct_pairs.bin', 'wb') as f:
     pickle.dump(distinct_matched_pairs, f)
-with open('server/total_matched_pairs.bin', 'wb') as f:
+with open('total_matched_pairs.bin', 'wb') as f:
     pickle.dump(total_matched_pairs, f)
 

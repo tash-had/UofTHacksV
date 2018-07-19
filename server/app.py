@@ -1,17 +1,22 @@
 from flask import Flask, jsonify
 from pymongo import MongoClient
 
+
 from flask import abort, make_response, request, url_for
 import scraper.n
 import base64
 import json
 import png
+# from flask_assistant import Assistant, tell
 
 app = Flask(__name__)
 # mongo = PyMongo(app)
 client = MongoClient(host='localhost', port=27017)
 db = client.data
+# client = MongoClient("mongodb://quickdressedadmin:quickdresspassword@cluster0-shard-00-00-qfhms.mongodb.net:27017,cluster0-shard-00-01-qfhms.mongodb.net:27017,cluster0-shard-00-02-qfhms.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin")
+# db = client.users
 
+# assist = Assistant(app)
 
 @app.route('/', methods=["GET", "POST"])
 def receive_outfit():
@@ -67,6 +72,11 @@ def receive_outfit():
 def get_outfit():
     return jsonify({"Outfit": "Blue Jeans + White Shirt"})
 
+# @assist.action('get_outfit')
+# @app.route('/QuickDressed/api/v1.0/outfits/get', methods=['GET'])
+# def get_outfit():
+#     speech = 'Microphone check 1, 2 what is this?'
+#     return tell(speech)
 
 # @app.route('/QuickDressed/api/v1.0/outfits/post', methods=['PUT'])
 # def post_outfit():
@@ -86,3 +96,5 @@ TODO:
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
 
+# if os.environ["LOCAL"] == "yes":
+#     app.run(host='0.0.0.0', port=8080, debug=True)
